@@ -52,6 +52,6 @@ int	main(int argc, char **argv)
 	i = 0;
 	while (mssg[i] != '\0')
 		send(pid, mssg[i++]);
-	send(pid, mssg[i]);
+	send(pid, '\0');
 	return (0);
 }
