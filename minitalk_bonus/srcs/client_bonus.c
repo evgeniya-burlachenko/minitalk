@@ -6,19 +6,12 @@
 /*   By: skelly <skelly@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 13:17:30 by skelly            #+#    #+#             */
-/*   Updated: 2021/10/25 13:22:16 by skelly           ###   ########.fr       */
+/*   Updated: 2021/10/26 00:52:11 by skelly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minitalk_bonus.h"
 
-static int	error_exit(char *error)
-{
-	ft_putstr_fd("Error: ", 2);
-	ft_putstr_fd(error, 2);
-	ft_putchar_fd('\n', 2);
-	exit(1);
-}
 int	ft_bit_decoder(int symbol, int serv_pid)
 {	
 	int	count;
@@ -38,8 +31,7 @@ int	ft_bit_decoder(int symbol, int serv_pid)
 			error_exit("Signal error2\n");
 		}
 		count/= 2;
-		while (!g_sigrecived)
-			continue ;
+		while (!g_sigrecived);
 	}
 	return (0);
 }
@@ -74,27 +66,24 @@ static void	ft_isdigit_2(char *c)
 int	main(int argc, char **argv)
 {
 	struct sigaction	serv_act;
-	siginfo_t			sig_info;
-	int					serv_pid;
+	pid_t				serv_pid;
+	int				 	i;
 
 	if (argc != 3)
 		ft_putstr_fd("Please enter a correct PID and message after.\n", 1);
 	else
 	{
-		
 		ft_isdigit_2(argv[1]);
 		serv_pid = ft_atoi(argv[1]);
-	
-			serv_act.sa_flags = SA_SIGINFO;
-			serv_act.sa_sigaction = &ft_server_signal_handler;
-			sigaction(SIGUSR1, &serv_act, 0);
-			sigaction(SIGUSR2, &serv_act, 0);
-			sig_info.si_pid = serv_pid;
-			int i = 0;
-			char *mssg = argv[2];
-			while (mssg[i] != '\0')
-				ft_bit_decoder(mssg[i++], serv_pid);
-			ft_bit_decoder('\0', serv_pid);
+		serv_act.sa_flags = SA_SIGINFO;
+		serv_act.sa_sigaction = &ft_server_signal_handler;
+		sigaction(SIGUSR1, &serv_act, 0);
+		sigaction(SIGUSR2, &serv_act, 0);
+		i = 0;
+		char *mssg = argv[2];
+		while (mssg[i] != '\0')
+			ft_bit_decoder(mssg[i++], serv_pid);
+		ft_bit_decoder('\0', serv_pid);
 	}
 	return (0);
 }

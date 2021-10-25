@@ -6,7 +6,7 @@
 /*   By: skelly <skelly@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 13:17:44 by skelly            #+#    #+#             */
-/*   Updated: 2021/10/25 13:22:40 by skelly           ###   ########.fr       */
+/*   Updated: 2021/10/26 00:47:07 by skelly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,4 +86,12 @@ void	ft_putnbr_fd(int n, int fd)
 int	ft_isdigit(int c)
 {
 	return (c >= '0' && c <= '9');
+}
+
+int	error_exit(char *error)
+{
+	ft_putstr_fd("Error: ", 2);
+	ft_putstr_fd(error, 2);
+	ft_putchar_fd('\n', 2);
+	exit(1);
 }

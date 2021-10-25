@@ -6,7 +6,7 @@
 /*   By: skelly <skelly@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 13:17:38 by skelly            #+#    #+#             */
-/*   Updated: 2021/10/25 13:24:51 by skelly           ###   ########.fr       */
+/*   Updated: 2021/10/26 00:47:38 by skelly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,10 @@ void	ft_signal_handler(int sig_nb, siginfo_t *sig_info, void *context)
 	{
 		if (symbol == '\0')
 		{
-			if (cli_pid != 0)
-			{
 				ft_putchar_fd('\n', 1);
 				kill(cli_pid, SIGUSR1);
 				cli_pid = 0;
 				return ;
-			}
 		}
 		ft_putchar_fd(symbol, 1);
 		count = 128;
@@ -56,21 +53,20 @@ void	ft_putpid(void)
 	ft_putstr_fd(">>\n", 1);
 }
 
-int	main(void)
+int	main(int argc, char **argv)
 {
 	struct sigaction	action;
-	int					sig_check1;
-	int					sig_check2;
-
+	
+	(void)argv;
 	ft_putpid();
+	if (argc != 1)
+		error_exit("Please enter ./client ");
 	action.sa_flags = SA_SIGINFO;
 	action.sa_sigaction = ft_signal_handler;
-	sig_check1 = sigaction(SIGUSR1, &action, 0);
-	if (sig_check1 != 0)
-		ft_putstr_fd("Signal error!\n", 1);
-	sig_check2 = sigaction(SIGUSR2, &action, 0);
-	if (sig_check2 != 0)
-		ft_putstr_fd("Signal error!\n", 1);
+	if (sigaction(SIGUSR1, &action, 0) == -1)
+		error_exit("Signal error!\n");
+	if (sigaction(SIGUSR2, &action, 0) == -1)
+		error_exit("Signal error!\n");
 	ft_putstr_fd("The server has started successfully\n", 1);
 	while (1)
 		pause();
