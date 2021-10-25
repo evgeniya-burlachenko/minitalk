@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: skelly <skelly@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/05 16:06:28 by gjacqual          #+#    #+#             */
-/*   Updated: 2021/10/25 12:58:46 by skelly           ###   ########.fr       */
+/*   Created: 2021/10/25 13:18:21 by skelly            #+#    #+#             */
+/*   Updated: 2021/10/25 13:18:24 by skelly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef MINITALK_H
 # define MINITALK_H
