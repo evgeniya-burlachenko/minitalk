@@ -6,7 +6,7 @@
 #    By: skelly <skelly@student.21-school.ru>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/25 13:18:15 by skelly            #+#    #+#              #
-#    Updated: 2021/10/25 13:18:16 by skelly           ###   ########.fr        #
+#    Updated: 2021/10/25 13:21:39 by skelly           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -68,10 +68,3 @@ re:		fclean all
 
 .PHONY: all clean fclean re bonus server_bonus client_bonus
 	
-
-
-
-
-
-
-

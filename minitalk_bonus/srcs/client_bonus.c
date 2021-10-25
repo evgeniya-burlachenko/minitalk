@@ -6,20 +6,12 @@
 /*   By: skelly <skelly@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 13:17:30 by skelly            #+#    #+#             */
-/*   Updated: 2021/10/25 13:17:33 by skelly           ###   ########.fr       */
+/*   Updated: 2021/10/25 13:22:16 by skelly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../minitalk_bonus.h"
 
-// int	check_real_pid(int serv_pid)
-// {
-// 	if (99 < serv_pid && serv_pid < 99999)
-// 		return (1);
-// 	ft_putstr_fd("Server PID is incorrect or not exist.\n", 1);
-// 	return (0);
-// }
 static int	error_exit(char *error)
 {
 	ft_putstr_fd("Error: ", 2);
@@ -30,7 +22,6 @@ static int	error_exit(char *error)
 int	ft_bit_decoder(int symbol, int serv_pid)
 {	
 	int	count;
-	//int	sig_answer;
 
 	count = 128;
 	while (count > 0)
@@ -46,34 +37,12 @@ int	ft_bit_decoder(int symbol, int serv_pid)
 			if(kill(serv_pid, SIGUSR2) == -1)
 			error_exit("Signal error2\n");
 		}
-		// if (sig_answer != 0)
-		// 	error_exit("Signal error\n");
-		//usleep(115);
 		count/= 2;
 		while (!g_sigrecived)
 			continue ;
 	}
 	return (0);
 }
-
-// int	bit_sender(char *message, int serv_pid)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (message[i] != '\0')
-// 	{
-// 		if (ft_bit_decoder(message[i], serv_pid) != 0)
-// 		{
-// 			ft_putstr_fd("Error: Serv PID is incorrect!\n", 1);
-// 			return (0);
-// 		}
-// 		i++;
-// 	}
-// 	if (ft_bit_decoder(0, serv_pid) != 1)
-// 		return (0);
-// 	return (1);
-// }
 
 void	ft_server_signal_handler(int sig_nb, siginfo_t *sig_info, void *context)
 {
@@ -89,12 +58,11 @@ void	ft_server_signal_handler(int sig_nb, siginfo_t *sig_info, void *context)
 		g_sigrecived = 1;
 	}
 }
+
 static void	ft_isdigit_2(char *c)
 {
 	if (c)
 	{
-		// if (*c == '-')
-		// 	c++;
 		while (*c)
 		{
 			if (*c > '9' || *c < '0')
@@ -128,10 +96,5 @@ int	main(int argc, char **argv)
 				ft_bit_decoder(mssg[i++], serv_pid);
 			ft_bit_decoder('\0', serv_pid);
 	}
-	// if (bit_sender(argv[2], serv_pid))
-	// 	ft_putstr_fd("Message has been sent\n", 1);
-	// else
-	// 	ft_putstr_fd("Error: Message has not been sent\n", 1);
 	return (0);
-	
 }

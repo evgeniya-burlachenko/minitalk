@@ -6,11 +6,9 @@
 /*   By: skelly <skelly@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 13:17:50 by skelly            #+#    #+#             */
-/*   Updated: 2021/10/25 13:17:51 by skelly           ###   ########.fr       */
+/*   Updated: 2021/10/25 13:22:44 by skelly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-
 
 #ifndef MINITALK_BONUS_H
 # define MINITALK_BONUS_H
