@@ -1,43 +1,31 @@
-#include "../includes/server_bonus.h"
-#include "../includes/client_bonus.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils_bonus.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: skelly <skelly@student.21-school.ru>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/14 15:37:37 by gjacqual          #+#    #+#             */
+/*   Updated: 2021/10/25 13:00:39 by skelly           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-void	ft_putstr_fd(char *s, int fd)
-{
-	if (!s)
-		return ;
-	while (*s)
-	{
-		write(fd, &*s, 1);
-		s++;
-	}
-}
+#include "../minitalk_bonus.h"
 
 void	ft_putchar_fd(char c, int fd)
 {
 	write(fd, &c, 1);
 }
 
-void	ft_putnbr_fd(int n, int fd)
+void	ft_putstr_fd(char *s, int fd)
 {
-	if (n == -2147483648)
+	int	i;
+
+	i = 0;
+	while (s[i] != '\0')
 	{
-		ft_putchar_fd('-', fd);
-		ft_putchar_fd('2', fd);
-		ft_putnbr_fd(147483648, fd);
-	}
-	else if (n < 0)
-	{
-		ft_putchar_fd('-', fd);
-		ft_putnbr_fd(n * (-1), fd);
-	}
-	else if (n > 9)
-	{
-		ft_putnbr_fd(n / 10, fd);
-		ft_putnbr_fd(n % 10, fd);
-	}
-	else
-	{
-		ft_putchar_fd(n + '0', fd);
+		write(fd, &s[i], 1);
+		i++;
 	}
 }
 
@@ -68,10 +56,34 @@ int	ft_atoi(const char *str)
 	return (sign * (int)r);
 }
 
-int	error_exit(char *error)
+void	ft_putnbr_fd(int n, int fd)
 {
-	ft_putstr_fd("Error: ", 2);
-	ft_putstr_fd(error, 2);
-	ft_putchar_fd('\n', 2);
-	exit(1);
+	char	c;
+
+	if (n < 0)
+	{	
+		if (n == -2147483648)
+			ft_putstr_fd("-2147483648", fd);
+		else
+		{
+			n = -n;
+			ft_putchar_fd('-', fd);
+			ft_putnbr_fd(n, fd);
+		}
+	}
+	else if (n >= 10)
+	{
+		ft_putnbr_fd(n / 10, fd);
+		ft_putnbr_fd(n % 10, fd);
+	}
+	else
+	{
+		c = n + 48;
+		ft_putchar_fd(c, fd);
+	}
+}
+
+int	ft_isdigit(int c)
+{
+	return (c >= '0' && c <= '9');
 }

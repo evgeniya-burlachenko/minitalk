@@ -1,47 +1,65 @@
-NAME				=	minitalk
+NAME		=	minitalk
 
-CL					=	client
-HEADER_PATH			=	includes
-CL_SRC_LST			=	srcs/utils.c srcs/client.c
+SERVER		:=	server
+CLIENT		:=	client
 
-SV					=	server
-SV_SRC_LST			=	srcs/utils.c srcs/server.c
+CC :=  gcc
+CFLAGS	:= -Wall -Wextra -Werror
+RM	= rm -f
 
-HEADER_PATH_BONUS	=	minitalk_bonus/includes
-CL_SRC_LST_BONUS	=	minitalk_bonus/srcs/utils_bonus.c minitalk_bonus/srcs/client_bonus.c
-SV_SRC_LST_BONUS	=	minitalk_bonus/srcs/utils_bonus.c minitalk_bonus/srcs/server_bonus.c
+SRC_DIR		:= srcs
+SRC_B_DIR	:= minitalk_bonus/srcs
 
-CC					=	gcc
-FLAGS				=	-Wall -Wextra -Werror
-RM					=	rm -rf
+B_DIR := minitalk_bonus
 
-all: $(NAME)
+SRC_SERVER	:= ${SRC_DIR}/server.c ${SRC_DIR}/utils.c
+OBJ_SERVER 	:= ${SRC_SERVER:.c=.o}
 
-$(NAME): $(CL) $(SV)
+SRC_CLIENT	:= ${SRC_DIR}/client.c ${SRC_DIR}/utils.c
+OBJ_CLIENT 	:= ${SRC_CLIENT:.c=.o}
 
-$(CL): $(CL_SRC_LST)
-	$(CC) $(FLAGS) -I $(HEADER_PATH) $(CL_SRC_LST) -o $(CL)
+SRC_SERVER_B	:= ${SRC_B_DIR}/server_bonus.c ${SRC_B_DIR}/utils_bonus.c
+OBJ_SERVER_B 	:= ${SRC_SERVER_B:.c=.o}
 
-$(SV): $(SV_SRC_LST)
-	$(CC) $(FLAGS) -I $(HEADER_PATH) $(SV_SRC_LST) -o $(SV)
+SRC_CLIENT_B	:= ${SRC_B_DIR}/client_bonus.c ${SRC_B_DIR}/utils_bonus.c
+OBJ_CLIENT_B 	:= ${SRC_CLIENT_B:.c=.o}
 
-bonus: cl_bonus sv_bonus
+all:	${NAME}
 
-cl_bonus: $(CL_SRC_LST_BONUS)
-	$(CC) $(FLAGS) -I $(HEADER_PATH_BONUS) $(CL_SRC_LST_BONUS) -o $(CL)
+${NAME}: ${SERVER} ${CLIENT} 
 
-sv_bonus: $(SV_SRC_LST_BONUS)
-	$(CC) $(FLAGS) -I $(HEADER_PATH_BONUS) $(SV_SRC_LST_BONUS) -o $(SV)
+${SERVER}: ${OBJ_SERVER} minitalk.h
+	@ ${CC} ${CFLAGS} -o ${SERVER} ${OBJ_SERVER}
+	@echo "server is ready"	
 
-cl: $(CL)
+${CLIENT}: ${OBJ_CLIENT} minitalk.h
+	@ ${CC} ${CFLAGS} -o ${CLIENT} ${OBJ_CLIENT}
+	@echo "client is ready"	
 
-sv: $(SV)
+bonus:  server_bonus client_bonus
+		
+server_bonus: ${OBJ_SERVER_B} ${B_DIR}/minitalk_bonus.h
+	@ ${CC} ${CFLAGS} -I ${B_DIR} -o ${SERVER} ${OBJ_SERVER_B}
+	@echo "server bonus is ready"	
+
+client_bonus: ${OBJ_CLIENT_B} ${B_DIR}/minitalk_bonus.h
+	@ ${CC} ${CFLAGS} -I ${B_DIR} -o ${CLIENT} ${OBJ_CLIENT_B}
+	@echo "client bonus is ready"	
 
 clean:
+		rm -rf ${OBJ_CLIENT} ${OBJ_SERVER} ${OBJ_CLIENT_B} ${OBJ_SERVER_B}
 
 fclean: clean
-	@$(RM) $(SV) $(CL) $(SV_BONUS) $(CL_BONUS) 
+		${RM} ${SERVER} ${CLIENT}
 
-re: fclean all
+re:		fclean all
 
- .PHONY: all clean sv cl fclean re sv_bonus cl_bonus $(NAME)
+.PHONY: all clean fclean re bonus server_bonus client_bonus
+	
+
+
+
+
+
+
+

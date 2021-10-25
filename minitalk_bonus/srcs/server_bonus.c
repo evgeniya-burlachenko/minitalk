@@ -1,51 +1,78 @@
-#include "../includes/server_bonus.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   server_bonus.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: skelly <skelly@student.21-school.ru>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/06 01:56:52 by gjacqual          #+#    #+#             */
+/*   Updated: 2021/10/24 23:07:44 by skelly           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-void	ft_signal(int sig, siginfo_t *info, void *ucontext)
+#include "../minitalk_bonus.h"
+
+void	ft_signal_handler(int sig_nb, siginfo_t *sig_info, void *context)
 {
-	static int	ch;
-	static int	counter;
+	static int					count;
+	static unsigned char		symbol;
+	static pid_t				cli_pid;
 
-	(void)ucontext;
-	if (!counter)
-		counter = 128;
-	if (sig == SIGUSR1)
-		ch += counter;
-	counter /= 2;
-	if (counter == 0)
+	 (void)context;
+	if (cli_pid == 0)
+		cli_pid = sig_info->si_pid;
+	if (!count)
+		count= 128;	
+	if (sig_nb == SIGUSR1)
+		symbol += count;
+	count /= 2;
+	if (count == 0)
 	{
-		if (ch == '\0')
+		if (symbol == '\0')
 		{
-			if (info->si_pid != 0)
+			if (cli_pid != 0)
 			{
-				if (kill(info->si_pid, SIGUSR1) == -1)
-					error_exit("Error");
+				ft_putchar_fd('\n', 1);
+				kill(cli_pid, SIGUSR1);
+				cli_pid = 0;
+				return ;
 			}
-			ft_putchar_fd('\n', 1);
+			
 		}
-		ft_putchar_fd((char)ch, 1);
-		counter = 128;
-		ch = 0;
-	}	
+		ft_putchar_fd(symbol, 1);
+		count = 128;
+		symbol = 0;
+	}
+	if (kill(cli_pid, SIGUSR2) != 0)
+		ft_putstr_fd("Signal error!\n", 1);
 }
 
-int	main(int argc, char **argv)
+void	ft_putpid(void)
 {
-	pid_t				pid;
-	struct sigaction	sa;
+	int	pid;
 
-	(void)argv;
 	pid = getpid();
-	if (argc != 1)
-		error_exit("bad arguments");
-	ft_putstr_fd("PID: ", 1);
+	ft_putstr_fd("Server PID: <<", 1);
 	ft_putnbr_fd(pid, 1);
-	ft_putchar_fd('\n', 1);
-	sa.sa_flags = SA_SIGINFO;
-	sa.sa_sigaction = ft_signal;
-	if (sigaction(SIGUSR1, &sa, NULL) == -1)
-		error_exit("Invalid value");
-	if (sigaction(SIGUSR2, &sa, NULL) == -1)
-		error_exit("Invalid value");
+	ft_putstr_fd(">>\n", 1);
+}
+
+int	main(void)
+{
+	struct sigaction	action;
+	int					sig_check1;
+	int					sig_check2;
+
+	ft_putpid();
+	action.sa_flags = SA_SIGINFO;
+	action.sa_sigaction = ft_signal_handler;
+	sig_check1 = sigaction(SIGUSR1, &action, 0);
+	if (sig_check1 != 0)
+		ft_putstr_fd("Signal error!\n", 1);
+	sig_check2 = sigaction(SIGUSR2, &action, 0);
+	if (sig_check2 != 0)
+		ft_putstr_fd("Signal error!\n", 1);
+	ft_putstr_fd("The server has started successfully\n", 1);
 	while (1)
 		pause();
 	return (0);
