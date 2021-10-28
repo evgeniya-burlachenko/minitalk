@@ -6,25 +6,25 @@
 #    By: skelly <skelly@student.21-school.ru>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/25 13:18:15 by skelly            #+#    #+#              #
-#    Updated: 2021/10/28 19:36:45 by skelly           ###   ########.fr        #
+#    Updated: 2021/10/28 19:39:34 by skelly           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME			=	minitalk
+NAME				=	minitalk
 
-SV				=	server
-SV_SRC_LST		=	srcs/utils.c srcs/server.c
+SV					=	server
+SV_SRC_LST			=	srcs/utils.c srcs/server.c
 
-CL				=	client
-CL_SRC_LST		= 	srcs/utils.c srcs/client.c
+CL					=	client
+CL_SRC_LST			= 	srcs/utils.c srcs/client.c
 
 HEADER_PATH_BONUS	=	minitalk_bonus
 CL_SRC_LST_BONUS	=	minitalk_bonus/srcs/utils_bonus.c minitalk_bonus/srcs/client_bonus.c
 SV_SRC_LST_BONUS	=	minitalk_bonus/srcs/utils_bonus.c minitalk_bonus/srcs/server_bonus.c
 
-CC 				:=  gcc
-FLAGS			:= -Wall -Wextra -Werror
-RM				 = rm -f
+CC 					=	gcc
+FLAGS				=	-Wall -Wextra -Werror
+RM					=	rm -f
 
 all:	${NAME}
 
