@@ -6,63 +6,53 @@
 #    By: skelly <skelly@student.21-school.ru>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/25 13:18:15 by skelly            #+#    #+#              #
-#    Updated: 2021/10/25 13:21:39 by skelly           ###   ########.fr        #
+#    Updated: 2021/10/28 19:36:45 by skelly           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME		=	minitalk
+NAME			=	minitalk
 
-SERVER		:=	server
-CLIENT		:=	client
+SV				=	server
+SV_SRC_LST		=	srcs/utils.c srcs/server.c
 
-CC :=  gcc
-CFLAGS	:= -Wall -Wextra -Werror
-RM	= rm -f
+CL				=	client
+CL_SRC_LST		= 	srcs/utils.c srcs/client.c
 
-SRC_DIR		:= srcs
-SRC_B_DIR	:= minitalk_bonus/srcs
+HEADER_PATH_BONUS	=	minitalk_bonus
+CL_SRC_LST_BONUS	=	minitalk_bonus/srcs/utils_bonus.c minitalk_bonus/srcs/client_bonus.c
+SV_SRC_LST_BONUS	=	minitalk_bonus/srcs/utils_bonus.c minitalk_bonus/srcs/server_bonus.c
 
-B_DIR := minitalk_bonus
-
-SRC_SERVER	:= ${SRC_DIR}/server.c ${SRC_DIR}/utils.c
-OBJ_SERVER 	:= ${SRC_SERVER:.c=.o}
-
-SRC_CLIENT	:= ${SRC_DIR}/client.c ${SRC_DIR}/utils.c
-OBJ_CLIENT 	:= ${SRC_CLIENT:.c=.o}
-
-SRC_SERVER_B	:= ${SRC_B_DIR}/server_bonus.c ${SRC_B_DIR}/utils_bonus.c
-OBJ_SERVER_B 	:= ${SRC_SERVER_B:.c=.o}
-
-SRC_CLIENT_B	:= ${SRC_B_DIR}/client_bonus.c ${SRC_B_DIR}/utils_bonus.c
-OBJ_CLIENT_B 	:= ${SRC_CLIENT_B:.c=.o}
+CC 				:=  gcc
+FLAGS			:= -Wall -Wextra -Werror
+RM				 = rm -f
 
 all:	${NAME}
 
-${NAME}: ${SERVER} ${CLIENT} 
+${NAME}: ${SV} ${CL} 
 
-${SERVER}: ${OBJ_SERVER} minitalk.h
-	@ ${CC} ${CFLAGS} -o ${SERVER} ${OBJ_SERVER}
+${SV}: ${SV_SRC_LST} minitalk.h
+	@ ${CC} ${FLAGS} -o ${SV} ${SV_SRC_LST}
 	@echo "server is ready"	
 
-${CLIENT}: ${OBJ_CLIENT} minitalk.h
-	@ ${CC} ${CFLAGS} -o ${CLIENT} ${OBJ_CLIENT}
+${CL}: $(CL_SRC_LST) minitalk.h
+	@ ${CC} ${FLAGS} -o ${CL} ${CL_SRC_LST}
 	@echo "client is ready"	
 
-bonus:  server_bonus client_bonus
+bonus:  sv_bonus cl_bonus
 		
-server_bonus: ${OBJ_SERVER_B} ${B_DIR}/minitalk_bonus.h
-	@ ${CC} ${CFLAGS} -I ${B_DIR} -o ${SERVER} ${OBJ_SERVER_B}
+sv_bonus: $(SV_SRC_LST_BONUS) ${HEADER_PATH_BONUS}/minitalk_bonus.h
+	@ ${CC} ${FLAGS} -I ${HEADER_PATH_BONUS} $(SV_SRC_LST_BONUS) -o ${SV}
 	@echo "server bonus is ready"	
 
-client_bonus: ${OBJ_CLIENT_B} ${B_DIR}/minitalk_bonus.h
-	@ ${CC} ${CFLAGS} -I ${B_DIR} -o ${CLIENT} ${OBJ_CLIENT_B}
+cl_bonus: $(CL_SRC_LST_BONUS) ${HEADER_PATH_BONUS}/minitalk_bonus.h
+	@ ${CC} ${FLAGS} -I ${HEADER_PATH_BONUS} $(CL_SRC_LST_BONUS) -o ${CL}
 	@echo "client bonus is ready"	
 
 clean:
-		rm -rf ${OBJ_CLIENT} ${OBJ_SERVER} ${OBJ_CLIENT_B} ${OBJ_SERVER_B}
+		rm -rf ${OBJ_CLIENT} ${OBJ_SERVER}
 
 fclean: clean
-		${RM} ${SERVER} ${CLIENT}
+		${RM} ${SV} ${CL}
 
 re:		fclean all
 
