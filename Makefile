@@ -6,7 +6,7 @@
 #    By: skelly <skelly@student.21-school.ru>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/25 13:18:15 by skelly            #+#    #+#              #
-#    Updated: 2021/10/28 19:40:19 by skelly           ###   ########.fr        #
+#    Updated: 2021/10/28 19:43:25 by skelly           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,13 +48,16 @@ cl_bonus: $(CL_SRC_LST_BONUS) ${HEADER_PATH_BONUS}/minitalk_bonus.h
 	@ ${CC} ${FLAGS} -I ${HEADER_PATH_BONUS} $(CL_SRC_LST_BONUS) -o ${CL}
 	@echo "client bonus is ready"	
 
+cl: $(CL)
+
+sv: $(SV)
+
 clean:
-		rm -rf ${OBJ_CLIENT} ${OBJ_SERVER}
 
 fclean: clean
-		${RM} ${SV} ${CL}
+		${RM} ${SV} ${CL} $(SV_BONUS) $(CL_BONUS) 
 
 re:		fclean all
 
-.PHONY: all clean fclean re bonus server_bonus client_bonus
+.PHONY: all clean fclean re bonus sv_bonus cl_bonus sv cl 
 	
