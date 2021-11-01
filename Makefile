@@ -1,52 +1,38 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: skelly <skelly@student.21-school.ru>       +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2021/10/25 13:18:15 by skelly            #+#    #+#              #
-#    Updated: 2021/10/28 19:43:25 by skelly           ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 NAME				=	minitalk
+
+CL					=	client
+HEADER_PATH			=	includes
+CL_SRC_LST			=	srcs/utils.c srcs/client.c
 
 SV					=	server
 SV_SRC_LST			=	srcs/utils.c srcs/server.c
 
-CL					=	client
-CL_SRC_LST			= 	srcs/utils.c srcs/client.c
-
-HEADER_PATH_BONUS	=	minitalk_bonus
+HEADER_PATH_BONUS	=	minitalk_bonus/includes
 CL_SRC_LST_BONUS	=	minitalk_bonus/srcs/utils_bonus.c minitalk_bonus/srcs/client_bonus.c
 SV_SRC_LST_BONUS	=	minitalk_bonus/srcs/utils_bonus.c minitalk_bonus/srcs/server_bonus.c
 
-CC 					=	gcc
-FLAGS				=	-Wall -Wextra -Werror
-RM					=	rm -f
 
-all:	${NAME}
+CC					=	gcc
+FLAGS				=	-Wall -Wextra -Werror -O2
+RM					=	rm -rf
 
-${NAME}: ${SV} ${CL} 
+all: $(NAME)
 
-${SV}: ${SV_SRC_LST} minitalk.h
-	@ ${CC} ${FLAGS} -o ${SV} ${SV_SRC_LST}
-	@echo "server is ready"	
+$(NAME): $(CL) $(SV)
 
-${CL}: $(CL_SRC_LST) minitalk.h
-	@ ${CC} ${FLAGS} -o ${CL} ${CL_SRC_LST}
-	@echo "client is ready"	
+$(CL): $(CL_SRC_LST)
+	$(CC) $(FLAGS) -I $(HEADER_PATH) $(CL_SRC_LST) -o $(CL)
 
-bonus:  sv_bonus cl_bonus
-		
-sv_bonus: $(SV_SRC_LST_BONUS) ${HEADER_PATH_BONUS}/minitalk_bonus.h
-	@ ${CC} ${FLAGS} -I ${HEADER_PATH_BONUS} $(SV_SRC_LST_BONUS) -o ${SV}
-	@echo "server bonus is ready"	
+$(SV): $(SV_SRC_LST)
+	$(CC) $(FLAGS) -I $(HEADER_PATH) $(SV_SRC_LST) -o $(SV)
 
-cl_bonus: $(CL_SRC_LST_BONUS) ${HEADER_PATH_BONUS}/minitalk_bonus.h
-	@ ${CC} ${FLAGS} -I ${HEADER_PATH_BONUS} $(CL_SRC_LST_BONUS) -o ${CL}
-	@echo "client bonus is ready"	
+bonus: cl_bonus sv_bonus
+
+cl_bonus: $(CL_SRC_LST_BONUS)
+	$(CC) $(FLAGS) -I $(HEADER_PATH_BONUS) $(CL_SRC_LST_BONUS) -o $(CL)
+
+sv_bonus: $(SV_SRC_LST_BONUS)
+	$(CC) $(FLAGS) -I $(HEADER_PATH_BONUS) $(SV_SRC_LST_BONUS) -o $(SV)
 
 cl: $(CL)
 
@@ -55,9 +41,8 @@ sv: $(SV)
 clean:
 
 fclean: clean
-		${RM} ${SV} ${CL} $(SV_BONUS) $(CL_BONUS) 
+	@$(RM) $(SV) $(CL) $(SV_BONUS) $(CL_BONUS) 
 
-re:		fclean all
+re: fclean all
 
-.PHONY: all clean fclean re bonus sv_bonus cl_bonus sv cl 
-	
+ .PHONY: all clean sv cl fclean re sv_bonus cl_bonus $(NAME)
