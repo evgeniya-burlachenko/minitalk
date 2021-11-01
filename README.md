@@ -2,10 +2,11 @@
 
 # Compiling
 
-$ ./server
+`$./server`
 
 PID: <PID_SERVER>
 
 (wait)
 
-$ ./client PID_SERVER STRING
+
+`$./client <PID_SERVER> <STRING>`
