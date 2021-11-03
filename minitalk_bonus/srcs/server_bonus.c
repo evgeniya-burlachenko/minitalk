@@ -6,7 +6,7 @@
 /*   By: skelly <skelly@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 13:17:38 by skelly            #+#    #+#             */
-/*   Updated: 2021/10/26 00:47:38 by skelly           ###   ########.fr       */
+/*   Updated: 2021/11/03 16:18:05 by skelly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	ft_signal_handler(int sig_nb, siginfo_t *sig_info, void *context)
 	if (cli_pid == 0)
 		cli_pid = sig_info->si_pid;
 	if (!count)
-		count= 128;	
+		count = 128;
 	if (sig_nb == SIGUSR1)
 		symbol += count;
 	count /= 2;
@@ -30,10 +30,10 @@ void	ft_signal_handler(int sig_nb, siginfo_t *sig_info, void *context)
 	{
 		if (symbol == '\0')
 		{
-				ft_putchar_fd('\n', 1);
-				kill(cli_pid, SIGUSR1);
-				cli_pid = 0;
-				return ;
+			ft_putchar_fd('\n', 1);
+			kill(cli_pid, SIGUSR1);
+			cli_pid = 0;
+			return ;
 		}
 		ft_putchar_fd(symbol, 1);
 		count = 128;
@@ -56,7 +56,7 @@ void	ft_putpid(void)
 int	main(int argc, char **argv)
 {
 	struct sigaction	action;
-	
+
 	(void)argv;
 	ft_putpid();
 	if (argc != 1)

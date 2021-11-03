@@ -6,7 +6,7 @@
 /*   By: skelly <skelly@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 13:17:30 by skelly            #+#    #+#             */
-/*   Updated: 2021/10/26 00:52:11 by skelly           ###   ########.fr       */
+/*   Updated: 2021/11/03 17:07:53 by skelly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,17 @@ int	ft_bit_decoder(int symbol, int serv_pid)
 		g_sigrecived = 0;
 		if (symbol & count)
 		{
-			if(kill(serv_pid, SIGUSR1) == -1)
-			error_exit("Signal error1\n");
+			if (kill(serv_pid, SIGUSR1) == -1)
+				error_exit ("Signal error1\n");
 		}
 		else
 		{
-			if(kill(serv_pid, SIGUSR2) == -1)
-			error_exit("Signal error2\n");
+			if (kill (serv_pid, SIGUSR2) == -1)
+				error_exit("Signal error2\n");
 		}
-		count/= 2;
-		while (!g_sigrecived);
+		count /= 2;
+		while (!g_sigrecived)
+			;
 	}
 	return (0);
 }
@@ -63,11 +64,13 @@ static void	ft_isdigit_2(char *c)
 		}	
 	}
 }
+
 int	main(int argc, char **argv)
 {
 	struct sigaction	serv_act;
 	pid_t				serv_pid;
-	int				 	i;
+	int					i;
+	char				*mssg;
 
 	if (argc != 3)
 		ft_putstr_fd("Please enter a correct PID and message after.\n", 1);
@@ -80,7 +83,7 @@ int	main(int argc, char **argv)
 		sigaction(SIGUSR1, &serv_act, 0);
 		sigaction(SIGUSR2, &serv_act, 0);
 		i = 0;
-		char *mssg = argv[2];
+		mssg = argv[2];
 		while (mssg[i] != '\0')
 			ft_bit_decoder(mssg[i++], serv_pid);
 		ft_bit_decoder('\0', serv_pid);

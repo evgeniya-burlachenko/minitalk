@@ -6,7 +6,7 @@
 /*   By: skelly <skelly@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 13:17:56 by skelly            #+#    #+#             */
-/*   Updated: 2021/10/25 13:21:02 by skelly           ###   ########.fr       */
+/*   Updated: 2021/11/03 16:15:36 by skelly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ static int	error_exit(char *error)
 	ft_putchar_fd('\n', 2);
 	exit(1);
 }
+
 int	ft_bit_decoder(int symbol, int serv_pid)
 {	
 	int	count;
@@ -29,12 +30,12 @@ int	ft_bit_decoder(int symbol, int serv_pid)
 		g_sigrecived = 0;
 		if (symbol & count)
 		{
-			if(kill(serv_pid, SIGUSR1) == -1)
-			error_exit("Signal error1\n");
+			if (kill (serv_pid, SIGUSR1) == -1)
+				error_exit ("Signal error1\n");
 		}
 		else
 		{
-			if(kill(serv_pid, SIGUSR2) == -1)
+			if (kill (serv_pid, SIGUSR2) == -1)
 			error_exit("Signal error2\n");
 		}
 		count /= 2;
@@ -58,6 +59,7 @@ void	ft_server_signal_handler(int sig_nb, siginfo_t *sig_info, void *context)
 		g_sigrecived = 1;
 	}
 }
+
 static void	ft_isdigit_2(char *c)
 {
 	if (c)
@@ -82,7 +84,6 @@ int	main(int argc, char **argv)
 	{
 		ft_isdigit_2(argv[1]);
 		serv_pid = ft_atoi(argv[1]);
-	
 			serv_act.sa_flags = SA_SIGINFO;
 			serv_act.sa_sigaction = &ft_server_signal_handler;
 			sigaction(SIGUSR1, &serv_act, 0);
