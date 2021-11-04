@@ -1,5 +1,5 @@
 # minitalk
-include <signal.h>
+#include <signal.h>
 # Compiling
 
 `$./server`
