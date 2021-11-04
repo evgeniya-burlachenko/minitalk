@@ -28,3 +28,7 @@ characters is COLOSSAL)
 needing to be restarted.
   - You can only use the two signals SIGUSR1 and SIGUSR2.
 <img width="977" alt="Screenshot 2021-11-03 at 17 31 19" src="https://user-images.githubusercontent.com/63720882/140080142-bb0f9ca4-a87e-456b-9806-be3fe7a41618.png">
+
+# Source
+
+https://ru.lipsum.com/
